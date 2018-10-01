@@ -6,7 +6,7 @@ namespace IfTask4
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Ohjelma lajittelee 3 numero nousevaan järjestykseen");
+            Console.WriteLine("Ohjelma lajittelee 3 numeroa nousevaan järjestykseen");
             Console.WriteLine("Syötä 3 numeroa: ");
             string userInput = Console.ReadLine();
             string userInput1 = Console.ReadLine();

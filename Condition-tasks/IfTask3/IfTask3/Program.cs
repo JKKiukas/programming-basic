@@ -30,6 +30,7 @@ namespace IfTask3
                 Console.WriteLine("Väärä syöte");
 
             Console.WriteLine($"Syötit luvun {userInput}");
+
         }
     }
 }
