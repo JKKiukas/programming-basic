@@ -13,7 +13,7 @@ namespace LoopTask3._4
 
             Console.WriteLine("Ohjelma tulostaa N ensimmäistä lukua yhteen.\n");
 
-            Console.Write("Syötä luku: ");
+            Console.WriteLine("Syötä luku: \n");
             luku = int.Parse(Console.ReadLine());
 
             if (luku > 0)
