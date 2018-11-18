@@ -10,7 +10,7 @@ namespace String_task1._1
             Console.WriteLine("Anna syöte.\n");
 
             string text = Console.ReadLine();
-            Console.WriteLine(text.Length);
+            Console.WriteLine($"\nSyötteessä on {text.Length} merkkiä.");
         }
     }
 }
