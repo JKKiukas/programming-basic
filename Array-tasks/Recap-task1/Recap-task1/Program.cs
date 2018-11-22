@@ -11,13 +11,9 @@ namespace Recap_task1
 
             for (int i = 0; i < numbers.Length; i++)
             {
-                PrintStars(numbers[i]);
+                Console.WriteLine(GetStars(numbers[i]));
+                //PrintStars(numbers[i]);
             }
-            /*PrintStars(numbers[0]);
-            PrintStars(numbers[1]);
-            PrintStars(numbers[2]);
-            PrintStars(numbers[3]);
-            PrintStars(numbers[4]);*/
         }
 
         /// <summary>
@@ -32,6 +28,22 @@ namespace Recap_task1
                 Console.Write("*");
             }
             Console.WriteLine();
+        }
+
+        /// <summary>
+        /// returns the amount of stars
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        static string GetStars(int length)
+        {
+            string returnStars = "";
+            for (int i = 0; i < length; i++)
+            {
+                /*returnStars += "*";*/
+                returnStars = $"{returnStars}*";
+            }
+            return returnStars;
         }
     }
 }
