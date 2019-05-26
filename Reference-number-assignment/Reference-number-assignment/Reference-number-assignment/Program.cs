@@ -7,8 +7,8 @@ namespace Reference_number_assignment
     {
         static void Main(string[] args)
         {
-            int[] f = new int[] { 7, 3, 1 };
-            string path = @"C:\TEMP\referencenumber.txt";
+            string path = @"C:\TEMP\viitenumero.txt";
+            int[] factor = new int[] { 7, 3, 1 };
             ConsoleKeyInfo cki;
 
             do
@@ -18,75 +18,85 @@ namespace Reference_number_assignment
                 switch (cki.Key)
                 {
                     case ConsoleKey.F1:
-                        if (CheckReferenceNumber(UserInput("Syötä viitenumero: ", 4), f))
+                        if (RefNumberChecker(UserInput("Syötä viitenumero: ", 4), factor))
                         {
                             Console.WriteLine("Viitenumero on oikein.");
                         }
+
                         else
                         {
-                            Console.WriteLine("Viitenumero on väärin.");
+                            Console.WriteLine("Viitenumero on väärä.");
                         }
                         break;
 
                     case ConsoleKey.F2:
-                        Console.WriteLine($"Viitenumero on kokonaisuudessaan: {CreateReferenceNumber(UserInput("Syötä viitenumeron alkuosa: ", 3), f)}");
+                        Console.WriteLine($"Viitenumero kokonaisuudessaan: {RefNumberCreator(UserInput("Syötä viitenumeron alkuosa: ", 3), factor)}");
                         break;
 
                     case ConsoleKey.F3:
-                        OptionF3(f, path);
+                        OptionF3(factor, path);
+                        break;
+
+                    case ConsoleKey.F4:
+                        ReadFile(path);
                         break;
 
                     case ConsoleKey.Escape:
-                        Console.WriteLine("Ohjelma suljetaan.");
+                        Console.WriteLine("\nOhjelma suljetaan.");
                         break;
 
                     default:
-                        Console.WriteLine("Väärä syöte. Valitse F1, F2, F3 tai Esc.");
+                        Console.WriteLine("Väärä valinta.");
                         break;
                 }
-                Console.WriteLine("Paina enter-näppäintä jatkaaksesi.");
-                Console.ReadLine();
+                Console.WriteLine("\nPaina mitä vain jatkaaksesi.");
+                Console.ReadKey();
                 Console.Clear();
+
             } while (cki.Key != ConsoleKey.Escape);
 
         }
         static ConsoleKeyInfo UserInterface()
         {
-            Console.WriteLine("Käyttäjä voi pyytää ohjelmaa tekemään seuraavat neljä asiaa.");
-            Console.WriteLine("Paina näppäintä mitä haluat tehdä.\n");
-
-            Console.WriteLine("[F1] Ohjelma tarkistaa kotimaisen viitenumeron.");
-            Console.WriteLine("[F2] Ohjelma luo kotimaisen viitenumeron.");
-            Console.WriteLine("[F3] Ohjelma luo käyttäjän syöttämän määrän kotimaisia viitenumeroita ja tallentaa ne tiedostoon.");
-            Console.WriteLine("[Esc] Sulkee ohjelman.");
+            Console.WriteLine("[F1] Tarkasta viitenumero.");
+            Console.WriteLine("[F2] Luo yksi viitenumero.");
+            Console.WriteLine("[F3] Luo viitenumeroita haluttu määrä ja tallenna ne viitenumero tiedostoon.");
+            Console.WriteLine("[F4] Lue viimeksi luodut viitenumerot viitenumerotiedostosta tiedostosta.");
+            Console.WriteLine("[Esc] Sulje ohjelma.");
+            Console.Write("\nSyötä valinta: ");
 
             return Console.ReadKey();
         }
+
         static string UserInput(string askInput, int length)
         {
             while (true)
             {
                 Console.Write(askInput);
-                string userInput = Console.ReadLine();
-                bool isNumber = int.TryParse(userInput, out int number);
+                string input = Console.ReadLine();
+                bool isNumber = int.TryParse(input, out int number);
+
                 if (isNumber && number > 0)
                 {
-                    if (userInput.Length >= length)
+
+                    if (input.Length >= length)
                     {
-                        return userInput;
+                        return input;
                     }
+
                     else
                     {
-                        Console.WriteLine("Viitenumeron pitää sisältää vähintään 4 numeroa (3 + tarkiste).");
+                        Console.WriteLine("Viitenumeron pitää olla vähintään 4 numeroinen (3 + tarkiste).");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Syötteessä on virhe! Syötessä saa olla vain numeroita.");
+                    Console.WriteLine("Syötteessä oli virhe! Syöte saa sisältää vain numeroita.");
                 }
             }
         }
-        static bool CheckReferenceNumber(string number, int[] f)
+
+        static bool RefNumberChecker(string number, int[] fact)
         {
             int sum = 0;
             int j = number.Length - 2;
@@ -94,24 +104,29 @@ namespace Reference_number_assignment
             for (int i = 0; i < number.Length - 1; i++)
             {
                 int nr = Convert.ToInt32(number[j].ToString());
-                sum += nr * f[i % 3];
+                sum += nr * fact[i % 3];
                 j--;
             }
-            int checkNum = 10 - (sum % 10);
-            if (checkNum == 10)
+
+            int checkNumber = 10 - (sum % 10);
+
+            if (checkNumber == 10)
             {
-                checkNum = 0;
+                checkNumber = 0;
             }
-            if (checkNum == Convert.ToInt32(number[number.Length - 1].ToString()))
+
+            if (checkNumber == Convert.ToInt32(number[number.Length - 1].ToString()))
             {
                 return true;
             }
+
             else
             {
                 return false;
             }
         }
-        static string CreateReferenceNumber(string number, int[] f)
+
+        static string RefNumberCreator(string number, int[] fact)
         {
             int sum = 0;
             int j = number.Length - 1;
@@ -119,55 +134,63 @@ namespace Reference_number_assignment
             for (int i = 0; i < number.Length; i++)
             {
                 int nr = Convert.ToInt32(number[j].ToString());
-                sum += nr * f[i % 3];
+                sum += nr * fact[i % 3];
                 j--;
             }
-            int checkNum = 10 - (sum % 10);
-            if (checkNum == 10)
+
+            int checkNumber = 10 - (sum % 10);
+
+            if (checkNumber == 10)
             {
-                checkNum = 0;
+                checkNumber = 0;
             }
-            number += checkNum;
-            number = SplitString(number);
+            number += checkNumber;
+            number = StringSplitter(number);
             return number;
         }
-        static string[] GenerateBaseReferenceNumber()
+
+        static string[] BaseRefNumberGenerator()
         {
-            string baseNum = UserInput("Syötä viitenumeron alkuosa: ", 3);
+            string baseNumber = UserInput("Syötä viitenumeron alkuosa: ", 3);
             int count = int.Parse(UserInput("Syötä viitenumeroiden määrä: ", 1));
-            string[] referenceNumbers = new string[count];
+            string[] refNumbers = new string[count];
             int j;
 
-            for (int i = 0; i < referenceNumbers.Length; i++)
+            for (int i = 0; i < refNumbers.Length; i++)
             {
                 j = i + 1;
-                referenceNumbers[i] = baseNum + j;
+                refNumbers[i] = baseNumber + j;
             }
-            return referenceNumbers;
+            return refNumbers;
         }
-        static string[] ReferenceNumberGenerator(string[] numbers, int[] f)
+
+        static string[] RefNumberGenerator(string[] numbers, int[] fact)
         {
             string number;
+
             for (int i = 0; i < numbers.Length; i++)
             {
                 number = numbers[i];
-                numbers[i] = CreateReferenceNumber(number, f);
+                numbers[i] = RefNumberCreator(number, fact);
             }
             return numbers;
         }
-        static string SplitString(string s)
+
+        static string StringSplitter(string str)
         {
-            int j = s.Length - 1;
-            for (int i = 1; i < s.Length; i++)
+            int j = str.Length - 1;
+
+            for (int i = 1; i < str.Length; i++)
             {
                 if (i % 5 == 0 && j > 0)
                 {
-                    s = s.Insert(j, " ");
+                    str = str.Insert(j, " ");
                 }
                 j--;
             }
-            return s;
+            return str;
         }
+
         static void WriteToFile(string[] numbers, string path)
         {
             StreamWriter R = new StreamWriter(path);
@@ -178,14 +201,36 @@ namespace Reference_number_assignment
             }
             R.Close();
         }
-        static string[] GenerateRandomReferenceNumber(int[] f)
+
+        static void ReadFile(string path)
+        {
+            try
+            {
+                using (StreamReader sr = new StreamReader(path))
+                {
+                    string line;
+                    Console.WriteLine("\nAikaisemmin luodut viitenumerot: ");
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        Console.WriteLine(line);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Tapahtui virhe: { ex.Message}");
+            }
+        }
+
+        static string[] RandomRefNumberGenerator(int[] fact)
         {
             Random rnd = new Random();
-            int count = int.Parse(UserInput("Syötä haluamasi viitenumeroiden määrä: ", 1));
-            string[] referenceNumbers = new string[count];
+            int count = int.Parse(UserInput("Syötä viitenumeroiden määrä: ", 1));
+            string[] refNumbers = new string[count];
             string number = "";
             int random;
-            for (int i = 0; i < referenceNumbers.Length; i++)
+
+            for (int i = 0; i < refNumbers.Length; i++)
             {
                 random = rnd.Next(3, 20);
                 number = "";
@@ -193,53 +238,57 @@ namespace Reference_number_assignment
                 {
                     number += rnd.Next(1, 9);
                 }
-                referenceNumbers[i] = number;
+                refNumbers[i] = number;
             }
-            referenceNumbers = ReferenceNumberGenerator(referenceNumbers, f);
+            refNumbers = RefNumberGenerator(refNumbers, fact);
 
-            return referenceNumbers;
+            return refNumbers;
         }
+
         static ConsoleKeyInfo InterfaceTwo()
         {
-            Console.WriteLine("Paina F1-näppäintä, jotta ohjelma tekee satunnaisia viitenumeroita.");
+            Console.WriteLine("Valitse luodaanko viitenumerot samalla alkuosalla vai kokonaan satunnaisena.");
+            Console.WriteLine("[F1] Syötä viitenumeron alkuosa.");
+            Console.WriteLine("[F2] Luo kokonaan satunnaiset viitenumerot.");
+            Console.Write("\nSyötä valinta: ");
 
             return Console.ReadKey();
         }
 
-        static void PrintReferenceNumber(string[] numbers)
+        static void RefNumberPrinter(string[] numbers)
         {
-            Console.WriteLine("Ohjelma teki seuraavat viitenumerot:\n");
+            Console.WriteLine("\nOhjelma loi alla olevat viitenumerot:\n");
+
             for (int i = 0; i < numbers.Length; i++)
             {
                 Console.WriteLine(numbers[i]);
             }
         }
+
         static void OptionF3(int[] factor, string path)
         {
             Console.Clear();
             ConsoleKeyInfo cki = InterfaceTwo();
             Console.WriteLine();
             switch (cki.Key)
+
             {
                 case ConsoleKey.F1:
-                    string[] no = GenerateRandomReferenceNumber(factor);
-                    PrintReferenceNumber(no);
+                    string[] nr = RefNumberGenerator(BaseRefNumberGenerator(), factor);
+                    RefNumberPrinter(nr);
+                    WriteToFile(nr, path);
+                    break;
+
+                case ConsoleKey.F2:
+                    string[] no = RandomRefNumberGenerator(factor);
+                    RefNumberPrinter(no);
                     WriteToFile(no, path);
                     break;
 
                 default:
-                    Console.WriteLine("Väärä valinta. Sinun on painettava F1-näppäintä.");
+                    Console.WriteLine("Väärä valinta.");
                     break;
             }
-        }
-        private static object BaseRefNumberGenerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        private static string[] RefNumberGenerator(object p, int[] factor)
-        {
-            throw new NotImplementedException();
         }
     }
 }
